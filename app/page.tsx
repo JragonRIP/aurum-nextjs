@@ -489,7 +489,7 @@ export default function Home() {
               <input
                 type="hidden"
                 name="_next"
-                value="http://localhost:3000/success"
+                value="https://aurum-nextjs.vercel.app/success"
               />
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
