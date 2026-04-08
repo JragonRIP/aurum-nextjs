@@ -159,7 +159,7 @@ export default function Home() {
         <FadeSection
           className="relative flex min-h-[70vh] flex-col items-start justify-center gap-10 pb-20 pt-0 md:min-h-[80vh]"
         >
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(201,168,76,0.18),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(24,24,27,1),_black_60%)]" />
+          <div className="pointer-events-none absolute -top-24 bottom-0 left-0 right-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(201,168,76,0.18),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(24,24,27,1),_black_60%)]" />
           <div className="max-w-xl space-y-6">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(201,168,76,0.85)]">
               Hermansville, Michigan · Upper Peninsula
