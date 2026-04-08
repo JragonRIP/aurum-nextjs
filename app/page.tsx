@@ -50,7 +50,7 @@ function FadeSection({
     <section
       id={id}
       ref={ref}
-      className={`transition-all duration-700 ease-out ${className}`}
+      className={`scroll-mt-24 md:scroll-mt-28 transition-all duration-700 ease-out ${className}`}
     >
       {children}
     </section>
@@ -138,9 +138,6 @@ export default function Home() {
             <a href="#services" className="hover:text-[rgba(201,168,76,0.95)] transition-colors">
               Services
             </a>
-            <a href="#pricing" className="hover:text-[rgba(201,168,76,0.95)] transition-colors">
-              Pricing
-            </a>
             <a href="#about" className="hover:text-[rgba(201,168,76,0.95)] transition-colors">
               About
             </a>
@@ -157,10 +154,10 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 pb-16 pt-10 md:pt-20">
+      <main className="mx-auto max-w-6xl px-6 pb-16 pt-5">
         {/* Hero */}
         <FadeSection
-          className="relative flex min-h-[70vh] flex-col items-start justify-center gap-10 pb-20 pt-10 md:min-h-[80vh]"
+          className="relative flex min-h-[70vh] flex-col items-start justify-center gap-10 pb-20 pt-0 md:min-h-[80vh]"
         >
           <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(201,168,76,0.18),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(24,24,27,1),_black_60%)]" />
           <div className="max-w-xl space-y-6">
