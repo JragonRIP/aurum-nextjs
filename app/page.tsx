@@ -120,6 +120,28 @@ function ShinyCard({
   );
 }
 
+type TransformationPair = {
+  id: number;
+  before?: string;
+  after?: string;
+  vehicle?: string;
+};
+
+const transformationPairs: TransformationPair[] = [
+  {
+    id: 1,
+    before: "/ford-1-before.png",
+    after: "/ford-1-after.png",
+    vehicle: "Ford Interior",
+  },
+  {
+    id: 2,
+    before: "/ford-2-before.png",
+    after: "/ford-2-after.png",
+    vehicle: "Ford Rear Interior",
+  },
+];
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-black text-zinc-100 font-sans">
@@ -137,6 +159,9 @@ export default function Home() {
           <nav className="hidden gap-8 text-sm text-zinc-300 md:flex">
             <a href="#services" className="hover:text-[rgba(201,168,76,0.95)] transition-colors">
               Services
+            </a>
+            <a href="#results" className="hover:text-[rgba(201,168,76,0.95)] transition-colors">
+              Results
             </a>
             <a href="#about" className="hover:text-[rgba(201,168,76,0.95)] transition-colors">
               About
@@ -160,29 +185,39 @@ export default function Home() {
           className="relative flex min-h-[70vh] flex-col items-start justify-center gap-10 pb-20 pt-0 md:min-h-[80vh]"
         >
           <div className="pointer-events-none absolute -top-24 bottom-0 left-0 right-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(201,168,76,0.18),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(24,24,27,1),_black_60%)]" />
-          <div className="max-w-xl space-y-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(201,168,76,0.85)]">
-              Hermansville, Michigan · Upper Peninsula
-            </p>
-            <h1 className="text-4xl font-semibold tracking-tight text-zinc-50 sm:text-5xl md:text-6xl">
-              Premium Auto Detailing
-              <span className="block text-zinc-400">in the Upper Peninsula</span>
-            </h1>
-            <p className="max-w-lg text-sm leading-relaxed text-zinc-400 sm:text-base">
-              Mobile or in-garage service tailored to your schedule. We come to you in
-              Hermansville and across the U.P. for meticulous, high-end detailing that
-              makes your vehicle feel better than new.
-            </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center rounded-full bg-[rgba(201,168,76,0.96)] px-7 py-3 text-sm font-medium tracking-[0.15em] text-black shadow-[0_0_35px_rgba(201,168,76,0.55)] transition hover:bg-[#d1b35a]"
-              >
-                Book a Detail
-              </a>
-              <span className="text-xs text-zinc-500">
-                Limited slots each week · Fully insured
-              </span>
+          <div className="grid w-full items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] md:gap-10">
+            <div className="max-w-xl space-y-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(201,168,76,0.85)]">
+                Hermansville, Michigan · Upper Peninsula
+              </p>
+              <h1 className="text-4xl font-semibold tracking-tight text-zinc-50 sm:text-5xl md:text-6xl">
+                Premium Auto Detailing
+                <span className="block text-zinc-400">in the Upper Peninsula</span>
+              </h1>
+              <p className="max-w-lg text-sm leading-relaxed text-zinc-400 sm:text-base">
+                Mobile or in-garage service tailored to your schedule. We come to you in
+                Hermansville and across the U.P. for meticulous, high-end detailing that
+                makes your vehicle feel better than new.
+              </p>
+              <div className="flex flex-wrap items-center gap-4">
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center rounded-full bg-[rgba(201,168,76,0.96)] px-7 py-3 text-sm font-medium tracking-[0.15em] text-black shadow-[0_0_35px_rgba(201,168,76,0.55)] transition hover:bg-[#d1b35a]"
+                >
+                  Book a Detail
+                </a>
+                <span className="text-xs text-zinc-500">
+                  Limited slots each week · Fully insured
+                </span>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-3xl border border-[rgba(201,168,76,0.35)] bg-zinc-950/70 shadow-[0_0_45px_rgba(201,168,76,0.25)]">
+              <img
+                src="/porche-detail-tire.png"
+                alt="Detailed vehicle wheel and side profile"
+                className="h-[280px] w-full object-cover object-center md:h-[440px] lg:h-[500px]"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.45),transparent_55%)]" />
             </div>
           </div>
           <div className="mt-6 grid w-full gap-4 text-xs text-zinc-400 sm:grid-cols-3">
@@ -356,6 +391,82 @@ export default function Home() {
                   {item.price}
                 </span>
               </ShinyCard>
+            ))}
+          </div>
+        </FadeSection>
+
+        {/* Before & After */}
+        <FadeSection
+          id="results"
+          className="mt-14 border-t border-zinc-900/80 pt-12 md:mt-16 md:pt-16"
+        >
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[rgba(201,168,76,0.85)]">
+                Results
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-50 md:text-3xl">
+                Before & After
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm text-zinc-400">
+                Real transformations from Upper Peninsula vehicles. See the difference
+                professional detailing makes, from heavily used interiors to refreshed,
+                clean finishes you can feel every time you get in.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-8 rounded-3xl border border-zinc-800 bg-zinc-950/65 p-4 shadow-[0_0_35px_rgba(0,0,0,0.75)] md:p-6">
+            {transformationPairs.map((pair, index) => (
+              <div
+                key={pair.id}
+                className={`${index > 0 ? "border-t border-zinc-800 pt-6 mt-6" : ""}`}
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[rgba(201,168,76,0.85)]">
+                    Set {pair.id}
+                  </p>
+                  {pair.vehicle ? (
+                    <p className="text-xs text-zinc-400">{pair.vehicle}</p>
+                  ) : null}
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="overflow-hidden rounded-2xl border border-[rgba(201,168,76,0.35)] bg-black/40">
+                    {pair.before ? (
+                      <img
+                        src={pair.before}
+                        alt={`Set ${pair.id} before detail`}
+                        className={`h-[300px] w-full object-cover ${pair.id === 1 ? "object-bottom" : ""}`}
+                      />
+                    ) : (
+                      <div className="flex h-[300px] items-center justify-center px-4 text-center text-sm text-zinc-500">
+                        Before image coming soon
+                      </div>
+                    )}
+                    <div className="border-t border-zinc-800 bg-zinc-950/90 px-4 py-2 text-xs uppercase tracking-[0.2em] text-zinc-300">
+                      Before
+                    </div>
+                  </div>
+
+                  <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-black/40">
+                    {pair.after ? (
+                      <img
+                        src={pair.after}
+                        alt={`Set ${pair.id} after detail`}
+                        className={`h-[300px] w-full object-cover ${pair.id === 1 ? "object-bottom" : ""}`}
+                      />
+                    ) : (
+                      <div className="flex h-[300px] items-center justify-center px-4 text-center text-sm text-zinc-500">
+                        After image coming soon
+                      </div>
+                    )}
+                    <div className="border-t border-zinc-800 bg-zinc-950/90 px-4 py-2 text-xs uppercase tracking-[0.2em] text-[rgba(201,168,76,0.9)]">
+                      After
+                    </div>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </FadeSection>
