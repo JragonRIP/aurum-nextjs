@@ -207,7 +207,7 @@ export default function Home() {
                   Book a Detail
                 </a>
                 <span className="text-xs text-zinc-500">
-                  Limited slots each week · Fully insured
+                  Limited slots each week
                 </span>
               </div>
             </div>
@@ -371,16 +371,16 @@ export default function Home() {
 
           <div className="mt-8 grid gap-4 text-sm text-zinc-200 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { name: "Wax and Sealant", price: "$30–$40" },
+              { name: "Wax and Sealant", price: "$40–$50" },
               { name: "Engine Bay Cleaning", price: "$40–$50" },
-              { name: "Glass Rain Repellent", price: "$10–$20" },
-              { name: "Undercarriage Rinse", price: "$10–$20" },
-              { name: "Bug or Sap Removal", price: "$5–$10" },
-              { name: "Pet Hair Removal", price: "$15–$20" },
+              { name: "Glass Rain Repellent", price: "$25" },
+              { name: "Undercarriage Rinse", price: "$10" },
+              { name: "Bug or Sap Removal", price: "$50" },
+              { name: "Pet Hair Removal", price: "$50" },
               { name: "Steam Clean Seat/Carpet", price: "$25–$40" },
-              { name: "Child Car Seat Clean", price: "$10" },
-              { name: "Deodorizer", price: "$5" },
-              { name: "Door Jamb Deep Clean", price: "$10–$15" },
+              { name: "Child Car Seat Clean", price: "$10–$30" },
+              { name: "Deodorizer", price: "$10" },
+              { name: "Door Jamb Deep Clean", price: "$25–$30" },
             ].map((item) => (
               <ShinyCard
                 key={item.name}
