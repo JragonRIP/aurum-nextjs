@@ -6,6 +6,7 @@ import {
   type ReactNode,
   useEffect,
   useRef,
+  useState,
 } from "react";
 
 function useFadeInOnScroll() {
@@ -143,11 +144,13 @@ const transformationPairs: TransformationPair[] = [
 ];
 
 export default function Home() {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-black text-zinc-100 font-sans">
       {/* Navigation */}
       <header className="sticky top-0 z-30 border-b border-zinc-800 bg-black/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="#top" className="flex items-center gap-3">
             <img
               src="/logo.png"
@@ -170,13 +173,79 @@ export default function Home() {
               Contact
             </a>
           </nav>
-          <a
-            href="#contact"
-            className="rounded-full border border-[rgba(201,168,76,0.35)] bg-[rgba(201,168,76,0.07)] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-[rgba(201,168,76,0.95)] shadow-[0_0_25px_rgba(201,168,76,0.15)] transition hover:bg-[rgba(201,168,76,0.14)] md:text-[0.7rem]"
-          >
-            Request a Detail
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="#contact"
+              className="hidden rounded-full border border-[rgba(201,168,76,0.35)] bg-[rgba(201,168,76,0.07)] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-[rgba(201,168,76,0.95)] shadow-[0_0_25px_rgba(201,168,76,0.15)] transition hover:bg-[rgba(201,168,76,0.14)] sm:inline-flex md:text-[0.7rem]"
+            >
+              Request a Detail
+            </a>
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-950 text-zinc-200 md:hidden"
+              aria-expanded={mobileNavOpen}
+              aria-controls="mobile-nav-menu"
+              aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMobileNavOpen((o) => !o)}
+            >
+              {mobileNavOpen ? (
+                <span className="text-xl leading-none" aria-hidden>
+                  ×
+                </span>
+              ) : (
+                <span className="flex flex-col gap-1.5" aria-hidden>
+                  <span className="block h-0.5 w-5 rounded-full bg-current" />
+                  <span className="block h-0.5 w-5 rounded-full bg-current" />
+                  <span className="block h-0.5 w-5 rounded-full bg-current" />
+                </span>
+              )}
+            </button>
+          </div>
         </div>
+        {mobileNavOpen ? (
+          <div
+            id="mobile-nav-menu"
+            className="absolute left-0 right-0 top-full z-40 border-b border-zinc-800 bg-zinc-950 shadow-[0_12px_40px_rgba(0,0,0,0.85)] md:hidden"
+          >
+            <nav className="mx-auto flex max-w-6xl flex-col gap-0 px-6 py-4 text-base text-zinc-100">
+              <a
+                href="#services"
+                className="border-b border-zinc-800/80 py-3 text-zinc-100 transition-colors hover:text-[rgba(201,168,76,0.95)]"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                Services
+              </a>
+              <a
+                href="#results"
+                className="border-b border-zinc-800/80 py-3 text-zinc-100 transition-colors hover:text-[rgba(201,168,76,0.95)]"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                Results
+              </a>
+              <a
+                href="#about"
+                className="border-b border-zinc-800/80 py-3 text-zinc-100 transition-colors hover:text-[rgba(201,168,76,0.95)]"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                About
+              </a>
+              <a
+                href="#contact"
+                className="border-b border-zinc-800/80 py-3 text-zinc-100 transition-colors hover:text-[rgba(201,168,76,0.95)]"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                Contact
+              </a>
+              <a
+                href="#contact"
+                className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-[rgba(201,168,76,0.45)] bg-[rgba(201,168,76,0.12)] px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[rgba(201,168,76,0.98)]"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                Request a Detail
+              </a>
+            </nav>
+          </div>
+        ) : null}
       </header>
 
       <main className="mx-auto max-w-6xl px-6 pb-16 pt-5">
