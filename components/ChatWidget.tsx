@@ -102,8 +102,9 @@ export function ChatWidget() {
     >
       {open && (
         <div
-          className="pointer-events-auto mb-3 flex w-full max-w-none flex-col overflow-hidden rounded-2xl border border-[rgba(201,168,76,0.35)] bg-zinc-950 shadow-[0_0_40px_rgba(0,0,0,0.85)] sm:mb-3 sm:max-w-[22rem] sm:rounded-2xl md:bg-zinc-950/95 md:backdrop-blur-md"
+          className="pointer-events-auto mb-3 flex w-full flex-col overflow-hidden rounded-2xl border border-[rgba(201,168,76,0.35)] bg-zinc-950 shadow-[0_0_40px_rgba(0,0,0,0.85)] md:bg-zinc-950/95 md:backdrop-blur-md"
           style={{
+            maxWidth: "min(100%, clamp(20rem, 92vw, 22rem))",
             height:
               "min(32rem, calc(100dvh - 5.5rem - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px)))",
             maxHeight:
