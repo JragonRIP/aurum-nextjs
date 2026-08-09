@@ -629,6 +629,18 @@ export function QuoteCalculatorLauncher({
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const onOpen = (event: Event) => {
+      const detail = (event as CustomEvent<{ id?: string }>).detail;
+      // Default chat CTA targets the main services calculator only
+      if (detail?.id && detail.id !== id) return;
+      if (!detail?.id && id !== "quote") return;
+      setOpen(true);
+    };
+    window.addEventListener("aurum:open-quote", onOpen);
+    return () => window.removeEventListener("aurum:open-quote", onOpen);
+  }, [id]);
+
+  useEffect(() => {
     if (!open) return;
     wrapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [open]);

@@ -17,6 +17,14 @@ export const AURUM_SYSTEM_PROMPT = `You are the customer assistant for Aurum Aut
 - If something is not in this knowledge base, say you don't have that info and direct them to the contact form, 906-290-0302, or aurumautodetail906@gmail.com.
 - For booking, point them to the contact form or phone.
 
+## Pricing questions (important)
+- When the user asks about pricing, rates, cost, how much something is, estimates, or quotes:
+  1. Share the relevant package rate ranges from this knowledge (Exterior / Interior / Full as needed).
+  2. Mention final price depends on vehicle size and condition.
+  3. Mention they can use the on-site quote calculator for a ballpark estimate.
+  4. End your message with exactly this token on its own line: [[QUOTE_CALCULATOR]]
+- Do not put the token anywhere else. Do not explain the token. The website turns it into a button.
+
 ## Business Overview & Service Type
 - Mobile detailing: We come directly to your home or location.
 - On-site requirements:
@@ -43,6 +51,8 @@ Final price within each range depends on vehicle size and condition. Quote range
 
 ## Add-On Services
 Quote only the listed prices/ranges below. Where a range is shown, do not give a single exact price inside that range. Where a single price is listed, quote that price only.
+
+Promo (Exterior or Interior packages only — not Full Detail): buy 2 add-ons, get 1 free (cheapest of the selected set is free when 3+ are selected).
 
 Interior-oriented:
 - Pet Hair Removal: $50
@@ -81,3 +91,32 @@ Exterior-oriented:
   - Light rain: Interior services proceed as scheduled; exterior services may be briefly delayed.
   - Heavy rain / extreme weather: Priority rescheduling is offered.
 `;
+
+export const QUOTE_CALCULATOR_TOKEN = "[[QUOTE_CALCULATOR]]";
+
+export function isPricingIntent(text: string): boolean {
+  return /\b(pric(?:e|ing)?|cost|rate|rates|how much|quote|estimate|afford|expensive|cheap|\$\d*|dollars?)\b/i.test(
+    text
+  );
+}
+
+export function ensureQuoteCalculatorToken(
+  reply: string,
+  userText: string
+): string {
+  if (reply.includes(QUOTE_CALCULATOR_TOKEN)) return reply;
+  if (!isPricingIntent(userText) && !isPricingIntent(reply)) return reply;
+  return `${reply.trim()}\n\n${QUOTE_CALCULATOR_TOKEN}`;
+}
+
+export function parseChatReply(content: string): {
+  text: string;
+  showQuoteButton: boolean;
+} {
+  const showQuoteButton = content.includes(QUOTE_CALCULATOR_TOKEN);
+  const text = content
+    .replaceAll(QUOTE_CALCULATOR_TOKEN, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  return { text, showQuoteButton };
+}

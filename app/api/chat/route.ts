@@ -1,5 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { AURUM_SYSTEM_PROMPT } from "@/lib/aurum-knowledge";
+import {
+  AURUM_SYSTEM_PROMPT,
+  ensureQuoteCalculatorToken,
+  parseChatReply,
+} from "@/lib/aurum-knowledge";
 
 type ChatMessage = {
   role: "user" | "model";
@@ -60,19 +64,28 @@ export async function POST(req: Request) {
 
     const history = messages.slice(0, -1).map((message) => ({
       role: message.role,
-      parts: [{ text: message.content }],
+      parts: [
+        {
+          text:
+            message.role === "model"
+              ? parseChatReply(message.content).text
+              : message.content,
+        },
+      ],
     }));
 
     const chat = model.startChat({ history });
     const result = await chat.sendMessage(last.content);
-    const reply = result.response.text();
+    const rawReply = result.response.text();
 
-    if (!reply?.trim()) {
+    if (!rawReply?.trim()) {
       return Response.json(
         { error: "No response from the assistant. Please try again." },
         { status: 502 }
       );
     }
+
+    const reply = ensureQuoteCalculatorToken(rawReply, last.content);
 
     return Response.json({ reply });
   } catch (error) {

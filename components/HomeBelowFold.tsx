@@ -464,9 +464,9 @@ export default function HomeBelowFold() {
 
             <button
               type="submit"
-              className="mt-2 inline-flex min-h-12 w-full touch-manipulation items-center justify-center rounded-full bg-[rgba(201,168,76,0.96)] px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-black shadow-[0_0_40px_rgba(201,168,76,0.55)] transition hover:bg-[#d1b35a] active:bg-[#c4a84e]"
+              className="metallic-gold mt-2 inline-flex min-h-12 w-full touch-manipulation items-center justify-center rounded-full px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.22em]"
             >
-              Request a Detail
+              <span>Request a Detail</span>
             </button>
           </form>
         </div>

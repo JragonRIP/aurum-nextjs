@@ -336,6 +336,82 @@ body {
   cursor: grab;
 }
 
+/* Chat FAB — expands left into a pill with label, then collapses */
+.chat-fab-btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  height: 3.5rem;
+  max-width: 3.5rem;
+  padding-left: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 168, 76, 0.55);
+  background-color: rgb(9, 9, 11);
+  color: rgba(201, 168, 76, 0.95);
+  box-shadow: 0 0 28px rgba(201, 168, 76, 0.25);
+  transition:
+    max-width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.chat-fab-btn:hover {
+  background-color: rgb(24, 24, 27);
+  box-shadow: 0 0 36px rgba(201, 168, 76, 0.4);
+}
+
+.chat-fab-btn:active {
+  transform: scale(0.97);
+}
+
+.chat-fab-btn:focus-visible {
+  outline: 2px solid rgba(201, 168, 76, 0.8);
+  outline-offset: 2px;
+}
+
+.chat-fab-btn.is-expanded {
+  max-width: min(92vw, 19.5rem);
+  padding-left: 1.05rem;
+}
+
+.chat-fab-label {
+  display: block;
+  max-width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(244, 244, 245, 0.96);
+  transform: translateX(0.65rem);
+  transition:
+    max-width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    margin-right 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chat-fab-btn.is-expanded .chat-fab-label {
+  max-width: 14.5rem;
+  margin-right: 0.15rem;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chat-fab-icon {
+  display: grid;
+  flex: 0 0 3.5rem;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .aurum-shimmer {
     animation: none;
@@ -348,5 +424,10 @@ body {
   .metallic-gold::before {
     animation: none;
     opacity: 0.35;
+  }
+
+  .chat-fab-btn,
+  .chat-fab-label {
+    transition: none;
   }
 }

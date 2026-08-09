@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { parseChatReply } from "@/lib/aurum-knowledge";
 
 type ChatMessage = {
   role: "user" | "model";
@@ -19,14 +20,20 @@ const WELCOME: ChatMessage = {
     "Hi — I'm the Aurum Auto Detail assistant. Are you looking for an interior detail, exterior detail, or a full detail?",
 };
 
+const TIP_DELAY_MS = 1400;
+const TIP_HOLD_MS = 5000;
+const TIP_SLIDE_MS = 550;
+
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME]);
+  const [tipShown, setTipShown] = useState(false);
   const listRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const tipPlayedRef = useRef(false);
 
   useEffect(() => {
     if (!open) return;
@@ -43,6 +50,58 @@ export function ChatWidget() {
       document.body.style.overflow = prev;
     };
   }, [open]);
+
+  // Expand FAB into a label pill, hold 5s, then collapse back
+  useEffect(() => {
+    if (open) {
+      setTipShown(false);
+      tipPlayedRef.current = true;
+      return;
+    }
+
+    if (tipPlayedRef.current) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      tipPlayedRef.current = true;
+      return;
+    }
+
+    const timers: number[] = [];
+
+    timers.push(
+      window.setTimeout(() => {
+        setTipShown(true);
+      }, TIP_DELAY_MS)
+    );
+
+    timers.push(
+      window.setTimeout(() => {
+        setTipShown(false);
+      }, TIP_DELAY_MS + TIP_HOLD_MS)
+    );
+
+    timers.push(
+      window.setTimeout(() => {
+        tipPlayedRef.current = true;
+      }, TIP_DELAY_MS + TIP_HOLD_MS + TIP_SLIDE_MS)
+    );
+
+    return () => {
+      timers.forEach((id) => window.clearTimeout(id));
+    };
+  }, [open]);
+
+  function openQuoteCalculator() {
+    setOpen(false);
+    window.setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("aurum:open-quote", { detail: { id: "quote" } })
+      );
+      document
+        .getElementById("quote")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  }
 
   async function sendMessage(text: string) {
     const trimmed = text.trim();
@@ -137,22 +196,38 @@ export function ChatWidget() {
             ref={listRef}
             className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-3 [-webkit-overflow-scrolling:touch]"
           >
-            {messages.map((message, index) => (
-              <div
-                key={`${message.role}-${index}`}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-              >
+            {messages.map((message, index) => {
+              const parsed =
+                message.role === "model"
+                  ? parseChatReply(message.content)
+                  : { text: message.content, showQuoteButton: false };
+
+              return (
                 <div
-                  className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-base leading-relaxed break-words sm:text-sm ${
-                    message.role === "user"
-                      ? "bg-[rgba(201,168,76,0.2)] text-zinc-50"
-                      : "bg-zinc-900 text-zinc-200"
-                  }`}
+                  key={`${message.role}-${index}`}
+                  className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  {message.content}
+                  <div
+                    className={`max-w-[85%] space-y-2.5 rounded-2xl px-3.5 py-2.5 text-base leading-relaxed break-words sm:text-sm ${
+                      message.role === "user"
+                        ? "bg-[rgba(201,168,76,0.2)] text-zinc-50"
+                        : "bg-zinc-900 text-zinc-200"
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap">{parsed.text}</p>
+                    {parsed.showQuoteButton ? (
+                      <button
+                        type="button"
+                        onClick={openQuoteCalculator}
+                        className="metallic-gold inline-flex w-full touch-manipulation items-center justify-center rounded-full px-4 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em]"
+                      >
+                        <span>Open quote calculator</span>
+                      </button>
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             {loading && (
               <div className="flex justify-start">
                 <div className="rounded-2xl bg-zinc-900 px-3.5 py-2.5 text-base text-zinc-400 sm:text-sm">
@@ -202,15 +277,20 @@ export function ChatWidget() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="pointer-events-auto flex h-14 w-14 touch-manipulation items-center justify-center rounded-full border border-[rgba(201,168,76,0.55)] bg-zinc-950 text-[rgba(201,168,76,0.95)] shadow-[0_0_28px_rgba(201,168,76,0.25)] transition active:scale-95 hover:bg-zinc-900 hover:shadow-[0_0_36px_rgba(201,168,76,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgba(201,168,76,0.8)] sm:hover:scale-105"
+        className={`chat-fab-btn pointer-events-auto touch-manipulation ${
+          !open && tipShown ? "is-expanded" : ""
+        }`}
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
       >
-        {open ? (
-          <span className="text-lg leading-none">✕</span>
-        ) : (
-          <ChatIcon />
-        )}
+        {!open ? (
+          <span className="chat-fab-label" aria-hidden={!tipShown}>
+            Have a Question? Ask AI
+          </span>
+        ) : null}
+        <span className="chat-fab-icon" aria-hidden="true">
+          {open ? <span className="text-lg leading-none">✕</span> : <ChatIcon />}
+        </span>
       </button>
     </div>
   );
